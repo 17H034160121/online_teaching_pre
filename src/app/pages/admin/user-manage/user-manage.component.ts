@@ -82,7 +82,7 @@ export class UserManageComponent implements OnInit {
   }
 
   downloadImportUserTpl(): void {
-    location.href = '下载模板地址';
+    location.href = 'http://qsiqf7q6k.hd-bkt.clouddn.com/template/%E7%94%A8%E6%88%B7%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx';
   }
 
   /**
@@ -106,7 +106,7 @@ export class UserManageComponent implements OnInit {
     }
 
     if (this.currentAddUserTab === 1) {
-      const { account, username, role, avatar } = this.addAdminForm;
+      const { account, username, role, avatar} = this.addAdminForm;
 
       if (!account || !username) {
         this.message.warning('管理员账号或者管理员用户名不能为空');

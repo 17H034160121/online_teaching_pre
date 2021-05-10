@@ -30,6 +30,17 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzFor="live_scope" nzRequired>直播范围</nz-form-label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="selectedScope" (ngModelChange)="scopeChange($event)">
+            <nz-option *ngFor="let p of scopeData; let i = index" [nzValue]="p" [nzLabel]="scopeName[i]"></nz-option>
+          </nz-select>
+          <nz-select [(ngModel)]="selectedScopeId">
+            <nz-option *ngFor="let c of scopeIdData[selectedScope]; let i = index" [nzValue]="c" [nzLabel]="scopeNameData[selectedScope][i]"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>直播间封面</nz-form-label>
         <nz-form-control [nzSpan]="14">
           <nz-upload

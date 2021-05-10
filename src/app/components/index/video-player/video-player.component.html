@@ -1,6 +1,5 @@
 <div class="container" #videoBox id="videoBox" (keydown)="handleVideoBoxKeydown($event)" tabIndex="1">
-  <video #video class="video video-js" poster="assets/images/video-poster.jpg">
-    <source [src]="videoSrc" type="rtmp/flv" />
+  <video #video class="video video-js" id="videoElement" controls="video_control">Your browser is too old to support HTML5 video.
   </video>
   <div class="video_control" #videoControl>
     <canvas #barrageCanvas class="barrage"></canvas>
@@ -86,7 +85,5 @@
       </div>
     </div>
   </div>
-  <div class="tips" *ngIf="living !== '1'">
-    <div class="content">主播正在路上，马上回来~</div>
-  </div>
+
 </div>

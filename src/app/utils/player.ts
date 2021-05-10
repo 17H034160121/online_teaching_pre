@@ -1,5 +1,4 @@
-import videojs from 'video.js';
-import 'videojs-flash';
+import flvjs from 'flv.js'
 
 export interface IPlayer {
   play: () => void;
@@ -17,13 +16,26 @@ export interface PlayerInfo {
 
 export default class Player implements IPlayer {
   private INIT_VOLUME = 0.5; // 默认音量
-  private INIT_PLAYING = false; // 默认是否播放
+  private INIT_PLAYING = true; // 默认是否播放
 
   private playerInfo: PlayerInfo;
-  private vPlayer: videojs.Player;
+  private vPlayer: flvjs.Player;
+  private videoP: any;
 
   constructor(video: HTMLVideoElement, options?: PlayerInfo) {
-    this.vPlayer = videojs(video);
+    this.vPlayer = flvjs.createPlayer({
+      type: 'flv',        // 指定视频类型
+      isLive: true,       // 开启直播
+      hasAudio: false,    // 关闭声音
+      cors: true,         // 开启跨域访问
+      url: "http://192.168.239.128:7431/live?port=1395&app=live&stream=1",
+    });
+
+    this.videoP = document.getElementById("videoElement");
+    this.vPlayer.attachMediaElement(this.videoP);
+    this.vPlayer.load();
+    this.vPlayer.play();
+
     this.initPlayerInfo(options);
   }
 
@@ -38,16 +50,23 @@ export default class Player implements IPlayer {
   }
 
   setVolume(value: number): void {
-    this.vPlayer.volume(value);
+    this.vPlayer.volume = value;
   }
 
   reload(): void {
+    this.vPlayer.unload();
     this.vPlayer.load();
-    this.play();
+    this.vPlayer.play();
   }
 
   dispose(): void {
-    this.vPlayer.dispose();
+    
+    this.vPlayer.pause();
+    this.vPlayer.unload();
+    // 卸载DOM对象
+    this.vPlayer.detachMediaElement();
+    // 销毁flvjs对象
+    this.vPlayer.destroy();
   }
 
   getPlayerInfo(): PlayerInfo {
@@ -63,8 +82,6 @@ export default class Player implements IPlayer {
     this.playerInfo = { ...initOptions, ...options };
     this.setVolume(this.playerInfo.volumn);
 
-    if (this.playerInfo.playing) {
-      this.vPlayer.play();
-    }
+
   }
 }
