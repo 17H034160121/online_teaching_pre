@@ -7,7 +7,7 @@ export const environment = {
   apiUrlPrefix: 'http://localhost:8080/api/v1',
   qiniuUrlPrefix: 'http://qsiqf7q6k.hd-bkt.clouddn.com',
   webSocketUrlPrefix: 'ws://localhost:8080/api/v1/webSocket',
-  rtmpUrlPrefix: 'rtmp://192.168.43.87'
+  rtmpUrlPrefix: 'rtmp://172.28.2.194'
 };
 
 /*

@@ -52,7 +52,6 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initVideoPlayer();
     this.initBarrageCanvas();
     this.initFullscreenEvent();
-    this.checkFlashPlugin();
   }
 
   ngOnDestroy() {
@@ -168,7 +167,6 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initVideoPlayer(): void {
     const $video = this.videoEr.nativeElement as HTMLVideoElement;
-    $video.removeAttribute('autoplay');
 
     this.myPlayer = new Player($video, {
       volumn: this.volume / 100,
@@ -202,9 +200,4 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private checkFlashPlugin(): void {
-    if (!navigator.plugins['Shockwave Flash']) {
-      this.nzNotification.warning('播放器初始化失败', '请下载或打开浏览器的 Flash');
-    }
-  }
 }

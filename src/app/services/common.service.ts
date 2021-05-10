@@ -30,4 +30,11 @@ export class CommonService {
   getAdminHomeData(): Observable<any> {
     return this.http.get('/admin/home');
   }
+
+    /**
+   * @description 获取后台管理首页数据
+   */
+     getLiveScope(): Observable<any> {
+      return this.http.get('/scope');
+    }
 }

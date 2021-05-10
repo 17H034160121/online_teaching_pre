@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import User from 'class/User';
 import LiveRoom from 'class/live-room';
 import { LiveService } from 'services/live.service';
+import { CommonService } from 'services/common.service';
 import { ResponseData, SUCCESS_CODE } from 'config/http-config';
 
 @Component({
@@ -15,6 +16,13 @@ import { ResponseData, SUCCESS_CODE } from 'config/http-config';
 })
 export class EditLiveComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
+
+  selectedScope = 'major';
+  selectedScopeId = '1';
+  scopeData = ['major', 'class', 'student'];
+  scopeName = ['院系','班级','学生'];
+  scopeIdData: { [scope: string]: string[] } ;
+  scopeNameData: { [scope: string]: string[] } ;
 
   roleType = EUserRole;
   userInfo: User;
@@ -27,6 +35,7 @@ export class EditLiveComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private er: ElementRef,
     private userSerive: UserService,
+    private commonService: CommonService,
     private notification: NzNotificationService,
     private liveService: LiveService,
     private message: NzMessageService
@@ -47,9 +56,23 @@ export class EditLiveComponent implements OnInit, OnDestroy {
         this.liveRoom = new LiveRoom();
       }
     });
+    const scopeInfoSub = this.commonService.getLiveScope().subscribe((res: ResponseData<any>) => {
+      this.scopeIdData = {
+        major: res.data.categoryIdData,
+        class: res.data.classesIdData,
+        student: res.data.userIdData
+      };
+
+      this.scopeNameData = {
+        major: res.data.categoryNameData,
+        class: res.data.classesNameData,
+        student: res.data.userNameData
+      };
+    });
 
     this.subscription.add(userInfoSub);
     this.subscription.add(liveRoomSub);
+    this.subscription.add(scopeInfoSub);
     this.liveTitleInputFocus();
   }
 
@@ -86,6 +109,7 @@ export class EditLiveComponent implements OnInit, OnDestroy {
     formData.append('title', title);
     formData.append('banner', banner);
     formData.append('poster', this.posterFile as any);
+    formData.append('scope', this.selectedScope + '-' + this.selectedScopeId);
 
     if (id) {
       if (status === '3') {
@@ -137,5 +161,9 @@ export class EditLiveComponent implements OnInit, OnDestroy {
   private liveTitleInputFocus(): void {
     const $liveLitle: HTMLElement = this.er.nativeElement.querySelector('#live_title');
     $liveLitle.focus();
+  }
+
+  provinceChange(value: string): void {
+    this.selectedScope = this.scopeIdData[value][0];
   }
 }

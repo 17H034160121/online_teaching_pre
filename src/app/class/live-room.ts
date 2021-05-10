@@ -10,4 +10,5 @@ export default class LiveRoom {
   liveTime?: string;
   createTime?: string;
   updateTime?: string;
+  scope?: string;
 }
